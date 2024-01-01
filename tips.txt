@@ -1,0 +1,24 @@
+**How can I debug with Qemu + GDB? **
+Create a GDB script file (e.g. `gdbscript.gdb`) with the following contents:
+```
+set disassembly-flavor intel
+target remote | qemu-system-i386 -S -gdb stdio -m 32 -fda your_image.img
+```
+You can use your own qemu flags, the important part is `-S -gdb stdio`. Then run gdb: `gdb -x gdbscript.gdb`, and debug using gdb commands. 
+
+Make sure you enable the map file generation in your linker (`-Wl,-Map=path_to_map_file`), the map contains some really useful information, such as the memory address of each function from your code. You can also use `i686-elf-objdump -D -S -m intel an_object_file.o` to print the disassembly intermixed with the source code, which makes it easier to follow while debugging.
+
+If you are using ELF, you can use symbols so you debug directly with your C/C++ source code instead of assembly. To get this working, enable symbols in your compiler and linker flags (`-g` or `-ggdb`). After linking, you can create a stripped version of your ELF binary if the size grows too big using the `i686-elf-strip` command (for putting in the disk image). Then add this line at the top of the gdb script:
+```
+symbol-file path_to_your_kernel_with_symbols.elf
+```
+**Common GDB  commands **
+Note: in gdb, you can shorten any command by just typing the first 1-2 letters of the command. For example, instead of `break` you can do `b`. Instead of `info registers` you can do `i r`. A blank command means repeating the last command.
+* `break *0x1234` creates a breakpoint at address 0x1234. 
+* `continue` continue running the program
+* `step` step in
+* `ni` step over to the next (assembly) instruction
+* `finish` step out (not sure how well it works with assembly)
+* `info registers` shows CPU registers. You can also specify a specific register to show.
+* <Ctrl+X><Ctrl+A> (or use `-tui` gdb flag) enables text user interface, so you can see the disassembly and some other stuff
+* more: https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf
