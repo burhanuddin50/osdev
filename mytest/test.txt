@@ -1,9 +1,0 @@
-Hello from a file! I am Burhanuddin Tinwalaa  
-In the FAT12 file system, the root directory is a special directory at the top level of the file system hierarchy. Unlike subdirectories, which are stored in clusters and linked through the file allocation table (FAT), the root directory entries are stored in a fixed location on the disk.
-
-Here are some key features of the root directory in FAT12:
-
-1. **Fixed Location:**
-   - The root directory is located immediately after the file allocation table on the disk.
-
-2. **Directory Entry Structure:bdvdvd 

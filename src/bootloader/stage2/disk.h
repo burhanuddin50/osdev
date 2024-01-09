@@ -1,7 +1,7 @@
 #pragma once 
 
-#include "stdint.h"
-
+#include <stdint.h>
+#include <stdbool.h>
 typedef struct{
     uint8_t id;
     uint16_t cylinders;
